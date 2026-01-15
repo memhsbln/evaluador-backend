@@ -11,26 +11,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "escuela_nivel")
+public class EscuelaNivel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @Column(name = "id_escuela_nivel")
+    private Long idEscuelaNivel;
 
-    @Column(name = "id_rol")
-    private Integer idRol;
+    @Column(name = "id_nivel")
+    private Long idNivel;
 
-    private String nombre;
-
-    private String apellido;
-
-    private String email;
-
-    private String password;
-
-    @Column(name = "nombreUsuario")
-    private String nombreUsuario;
+    @Column(name = "id_escuela")
+    private Long idEscuela;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -38,3 +30,4 @@ public class Usuario {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
+

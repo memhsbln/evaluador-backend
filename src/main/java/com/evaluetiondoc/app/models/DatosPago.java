@@ -5,32 +5,33 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "datos_pago")
+public class DatosPago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pago")
+    private Long idPago;
+
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    @Column(name = "id_rol")
-    private Integer idRol;
+    @Column(name = "id_status")
+    private Long idStatus;
 
-    private String nombre;
+    private BigDecimal monto;
 
-    private String apellido;
+    @Column(name = "fecha_pago")
+    private LocalDateTime fechaPago;
 
-    private String email;
-
-    private String password;
-
-    @Column(name = "nombreUsuario")
-    private String nombreUsuario;
+    @Column(name = "fecha_vencimiento")
+    private LocalDateTime fechaVencimiento;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -38,3 +39,4 @@ public class Usuario {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
+
