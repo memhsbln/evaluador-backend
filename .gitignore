@@ -1,43 +1,22 @@
-# Maven
-/target/
-**/target/
-!.mvn/wrapper/maven-wrapper.jar
-
-# Eclipse
-.classpath
-.project
-.settings/
-
-# IntelliJ
-/.idea/
+.idea/
 *.iml
-out/
-
-# VS Code
-.vscode/
-
-# Logs
+target/
 *.log
-logs/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Environment
+*.class
+.vscode/
 .env
-
-# Build results
+.DS_Store
 *.jar
 *.war
-
-# Temporary files
-*.tmp
-*.swp
-
-# Docker
-docker-compose.override.yml
-
-# Others
-node_modules/
+.mvn/
+*.db
+# IntelliJ
+out/
+# OS
+Thumbs.db
+desktop.ini
+# Maven
+.settings/
+# Spring Boot
+spring.log
 
