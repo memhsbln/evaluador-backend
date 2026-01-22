@@ -1,25 +1,22 @@
 package com.evaluetiondoc.app.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "cat_escuelas")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "cat_escuelas")
+@Builder
 public class CatEscuelas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_escuela")
-    private Long idEscuela;
+    private Long id;
 
     private String escuela;
-
     private String clave;
 
     @Column(name = "created_at")
@@ -27,5 +24,16 @@ public class CatEscuelas {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
 

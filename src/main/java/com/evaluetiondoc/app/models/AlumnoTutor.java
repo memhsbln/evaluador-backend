@@ -1,28 +1,28 @@
 package com.evaluetiondoc.app.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "alumno_tutor")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "alumno_tutor")
+@Builder
 public class AlumnoTutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_alumno_tutor")
-    private Long idAlumnoTutor;
+    private Long id;
 
-    @Column(name = "id_alumno")
-    private Long idAlumno;
+    @ManyToOne
+    @JoinColumn(name = "id_alumno")
+    private Alumno alumno;
 
-    @Column(name = "id_tutor")
-    private Long idTutor;
+    @ManyToOne
+    @JoinColumn(name = "id_tutor")
+    private Tutor tutor;
 
     private String parentesco;
 
@@ -31,5 +31,16 @@ public class AlumnoTutor {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
 

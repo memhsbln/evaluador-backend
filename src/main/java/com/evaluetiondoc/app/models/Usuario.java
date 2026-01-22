@@ -1,35 +1,29 @@
 package com.evaluetiondoc.app.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "usuarios")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "usuarios")
+@Builder
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private Long idUsuario;
+    private Long id;
 
-    @Column(name = "id_rol")
-    private Integer idRol;
+    @ManyToOne
+    @JoinColumn(name = "id_rol")
+    private CatRol rol;
 
     private String nombre;
-
     private String apellido;
-
     private String email;
-
     private String password;
-
-    @Column(name = "nombreUsuario")
     private String nombreUsuario;
 
     @Column(name = "created_at")
@@ -37,4 +31,16 @@ public class Usuario {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
+
