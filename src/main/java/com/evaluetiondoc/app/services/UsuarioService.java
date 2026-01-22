@@ -6,24 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioService {
+public interface UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    Usuario findByEmail(String email);
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    Usuario save(Usuario usuario);
 
-    public Optional<Usuario> findByEmail(String email) {
-        return usuarioRepository.findByEmail(email);
-    }
+    Usuario findById(Long id);
 
-    public Usuario save(Usuario usuario) {
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        return usuarioRepository.save(usuario);
-    }
+    void deleteById(Long id);
+
+    List<Usuario> findAll();
+
+
 }
 

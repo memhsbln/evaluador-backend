@@ -25,9 +25,11 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getById(@PathVariable Long id) {
-        return usuarioService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Usuario usuario = usuarioService.findById(id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
@@ -38,11 +40,11 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (usuarioService.findById(id).isPresent()) {
-            usuarioService.deleteById(id);
-            return ResponseEntity.noContent().build();
+        Usuario usuario = usuarioService.findById(id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        usuarioService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
-

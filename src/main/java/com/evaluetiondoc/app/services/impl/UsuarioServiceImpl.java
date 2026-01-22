@@ -3,18 +3,21 @@ package com.evaluetiondoc.app.services.impl;
 import com.evaluetiondoc.app.models.Usuario;
 import com.evaluetiondoc.app.repositories.UsuarioRepository;
 import com.evaluetiondoc.app.services.UsuarioService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,18 +26,24 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
-    }
-
-    @Override
-    public Usuario save(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public Usuario findById(Long id) {
+        return usuarioRepository.findById(id).get();
     }
 
     @Override
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
+    }
+
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public Usuario save(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return usuarioRepository.save(usuario);
     }
 }
 
