@@ -1,17 +1,29 @@
 package com.evaluetiondoc.app.services;
 
 import com.evaluetiondoc.app.models.Usuario;
+import com.evaluetiondoc.app.repositories.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface UsuarioService {
-    List<Usuario> findAll();
+@Service
+public class UsuarioService {
 
-    Optional<Usuario> findById(Long id);
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    Usuario save(Usuario usuario);
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    void deleteById(Long id);
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+    public Usuario save(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return usuarioRepository.save(usuario);
+    }
 }
 
