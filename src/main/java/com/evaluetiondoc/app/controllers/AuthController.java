@@ -1,60 +1,42 @@
 package com.evaluetiondoc.app.controllers;
 
-import com.evaluetiondoc.app.config.JwtUtil;
-import com.evaluetiondoc.app.models.Usuario;
-import com.evaluetiondoc.app.services.UsuarioService;
+import com.evaluetiondoc.app.dto.AuthResponseDTO;
+import com.evaluetiondoc.app.dto.LoginRequestDTO;
+import com.evaluetiondoc.app.dto.RegisterRequestDTO;
+import com.evaluetiondoc.app.dto.ResponseDTO;
+import com.evaluetiondoc.app.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@Validated
 public class AuthController {
+    private final AuthService authService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    private final JwtUtil jwtUtil = new JwtUtil("secret-key-por-defecto-cambiar");
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Usuario usuario) {
-        Usuario saved = usuarioService.save(usuario);
-        return ResponseEntity.ok(Map.of("id", saved.getId(), "email", saved.getEmail()));
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        try {
-            String email = body.get("email");
-            String password = body.get("password");
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            String access = jwtUtil.generateAccessToken(email);
-            String refresh = jwtUtil.generateRefreshToken(email);
-            return ResponseEntity.ok(Map.of("access_token", access, "refresh_token", refresh));
-        } catch (AuthenticationException ex) {
-            return ResponseEntity.status(401).body(Map.of("error", "Credenciales inválidas"));
-        }
+    public ResponseEntity<ResponseDTO<AuthResponseDTO>> login(@Valid @RequestBody LoginRequestDTO request) {
+        AuthResponseDTO response = authService.login(request);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "/api/auth/login", 200, "OK", "Login exitoso", response));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDTO<AuthResponseDTO>> register(@Valid @RequestBody RegisterRequestDTO request) {
+        AuthResponseDTO response = authService.register(request);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "/api/auth/register", 200, "OK", "Registro exitoso", response));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody Map<String, String> body) {
-        try {
-            String refresh = body.get("refresh_token");
-            var decoded = jwtUtil.verify(refresh);
-            String email = decoded.getSubject();
-            String access = jwtUtil.generateAccessToken(email);
-            return ResponseEntity.ok(Map.of("access_token", access));
-        } catch (Exception ex) {
-            return ResponseEntity.status(401).body(Map.of("error", "Refresh token inválido"));
-        }
+    public ResponseEntity<ResponseDTO<AuthResponseDTO>> refresh(@RequestParam("refresh_token") String refreshToken) {
+        AuthResponseDTO response = authService.refresh(refreshToken);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "/api/auth/refresh", 200, "OK", "Token renovado", response));
     }
 }
-

@@ -45,5 +45,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
-}
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return usuarioRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public boolean existsByNombreUsuario(String nombreUsuario) {
+        return usuarioRepository.findByNombreUsuario(nombreUsuario).isPresent();
+    }
+}

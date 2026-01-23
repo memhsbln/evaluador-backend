@@ -22,6 +22,9 @@ public interface UsuarioService {
 
     List<Usuario> findAll();
 
+    boolean existsByEmail(String email);
+
+    boolean existsByNombreUsuario(String nombreUsuario);
+
 
 }
-
