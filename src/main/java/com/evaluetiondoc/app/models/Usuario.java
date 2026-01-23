@@ -20,10 +20,19 @@ public class Usuario {
     @JoinColumn(name = "id_rol")
     private CatRol rol;
 
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "nombre_usuario")
     private String nombreUsuario;
 
     @Column(name = "created_at")

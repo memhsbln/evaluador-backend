@@ -17,6 +17,9 @@ public class RegisterRequestDTO {
     @Email(message = "Formato de email inválido")
     private String email;
 
+    @NotBlank(message = "El apellido es obligatorio")
+    private String apellido;
+
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String password;

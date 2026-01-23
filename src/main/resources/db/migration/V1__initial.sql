@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     apellido varchar(100) NOT NULL,
     email varchar(100) UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    nombreUsuario varchar(100) UNIQUE,
+    nombre_usuario varchar(100) UNIQUE,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
