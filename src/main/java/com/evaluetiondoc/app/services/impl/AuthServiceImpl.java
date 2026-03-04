@@ -65,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
         usuario.setApellido(requestDTO.getApellido());
         usuario.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         usuarioRepository.save(usuario);
+
         String access = jwtUtil.generateAccessToken(usuario.getEmail());
         String refresh = jwtUtil.generateRefreshToken(usuario.getEmail());
         return new AuthResponseDTO(access, refresh);
