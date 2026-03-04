@@ -8,6 +8,5 @@ public interface AuthService {
     AuthResponseDTO login(LoginRequestDTO requestDTO);
     AuthResponseDTO register(RegisterRequestDTO requestDTO);
     AuthResponseDTO refresh(String refreshToken);
-
 }
 
